@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
+import FloatingButton from "../../components/floatingbutton";
 import Layout from "../../components/layout";
-import { Chalk } from './../../node_modules/@babel/highlight/node_modules/chalk/types/index.d';
 
 const Community: NextPage = () => {
     return (
-        <Layout title="동네생활" hasTabBar>
+        <Layout title='동네생활' hasTabBar>
             <div className="py-16 px-4 space-y-8">
                 {[1, 2, 3, 4, 5].map((_, i) => (
                     <div key={i} className="flex flex-col cursor-pointer items-start">
@@ -56,8 +56,7 @@ const Community: NextPage = () => {
                         </div>
                     </div>
                 ))}
-
-                <button className='fixed bottom-24 right-5 transition-colors hover:bg-orange-700 bg-orange-400 rounded-full p-4 text-white shadow-xl'>
+                <FloatingButton href="/community/write">
                     <svg
                         className="w-6 h-6"
                         fill="none"
@@ -72,7 +71,9 @@ const Community: NextPage = () => {
                             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
                         ></path>
                     </svg>
-                </button>
+
+                </FloatingButton>
+
             </div>
         </Layout>
     );
