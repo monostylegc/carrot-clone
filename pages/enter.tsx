@@ -1,41 +1,35 @@
-import { useState } from "react";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
 import Button from "../components/button";
 import Input from "../components/input";
-import { cls } from "../libs/utils";
+
+
+interface EnterForm {
+    email: string;
+    password: string;
+}
 
 export default function Enter () {
-    const [method, setMethod] = useState<"email" | "phone">("email");
-    const onEmailClick = () => setMethod("email");
-    const onPhoneClick = () => setMethod("phone");
+    const { register, handleSubmit, reset } = useForm<EnterForm>();
+
+    const onValid = (data: EnterForm) => {
+        console.log(data)
+    }
+
     return (
         <div className="mt-16 px-4">
             <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
             <div className="mt-8">
                 <div className="flex flex-col items-center">
-                    <h5 className="text-sm text-gray-500 font-medium ">Enter using:</h5>
-                    <div className="grid grid-cols-2 gap-16 mt-8 w-full">
-                        <button className={cls('pb-4 font-medium', method === 'email' ? 'border-b-2 border-orange-500 text-orange-400' : 'border-transparent text-gray-500')} onClick={onEmailClick}>Email</button>
-                        <button className={cls('pb-4 font-medium', method === 'phone' ? 'border-b-2 border-orange-500 text-orange-400' : 'border-transparent text-gray-500')} onClick={onPhoneClick}>Phone</button>
-                    </div>
                 </div>
-                <form className="flex flex-col mt-8 space-y-4">
-                    {method === "email" ? (
-                        <Input name="email" label="Email address" type="email" required />
-                    ) : null}
-                    {method === "phone" ? (
-                        <Input
-                            name="phone"
-                            label="Phone number"
-                            type="number"
-                            kind="phone"
-                            required
-                        />
-                    ) : null}
-                    {method === "email" ? <Button text={"Get login link"} /> : null}
-                    {method === "phone" ? (
-                        <Button text={"Get one-time password"} />
-                    ) : null}
+                <form onSubmit={handleSubmit(onValid)} className="flex flex-col mt-8 space-y-4">
+                    <Input register={register('email', { required: true })} name="email" label="Email address" type="email" required />
+                    <Input register={register('password', { required: true })} name="password" label="Password" type="password" required />
+                    <Button text="Login" />
                 </form>
+                <div className="mt-4">
+                    <p className="text-center text-xs font-medium">Don't have account? <Link href='/register'><span className="text-orange-500 cursor-pointer underline font-bold">Sign UP!</span></Link></p>
+                </div>
                 <div className="mt-6">
                     <div className="relative">
                         <div className="absolute w-full border-t border-gray-300" />
