@@ -13,7 +13,10 @@ export default function Enter () {
     const { register, handleSubmit, reset } = useForm<EnterForm>();
 
     const onValid = (data: EnterForm) => {
-        console.log(data)
+        fetch("/api/users/enter",{
+            method:'POST',
+            body:JSON.stringify(data)
+        });
     }
 
     return (
