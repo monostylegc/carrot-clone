@@ -2,6 +2,8 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import Button from "../components/button";
 import Input from "../components/input";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 
 interface EnterForm {
@@ -9,14 +11,12 @@ interface EnterForm {
     password: string;
 }
 
-export default function Enter () {
+export default function Signin () {
     const { register, handleSubmit, reset } = useForm<EnterForm>();
+    const router = useRouter()
 
-    const onValid = (data: EnterForm) => {
-        fetch("/api/users/enter",{
-            method:'POST',
-            body:JSON.stringify(data)
-        });
+    const onValid = async (data: EnterForm) => {
+
     }
 
     return (
@@ -31,7 +31,7 @@ export default function Enter () {
                     <Button text="Login" />
                 </form>
                 <div className="mt-4">
-                    <p className="text-center text-xs font-medium">Don't have account? <Link href='/register'><span className="text-orange-500 cursor-pointer underline font-bold">Sign UP!</span></Link></p>
+                    <p className="text-center text-xs font-medium">Don't have account? <Link href='/signup'><span className="text-orange-500 cursor-pointer underline font-bold">Sign UP!</span></Link></p>
                 </div>
                 <div className="mt-6">
                     <div className="relative">
