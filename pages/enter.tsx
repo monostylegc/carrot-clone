@@ -4,20 +4,24 @@ import Button from "../components/button";
 import Input from "../components/input";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-
+import useMutation from '../libs/client/usemutation';
 
 interface EnterForm {
     email: string;
     password: string;
 }
 
-export default function Signin () {
+export default function Enter () {
+    const [enter, { loading, data, error }] = useMutation("/api/users/enter")
+
     const { register, handleSubmit, reset } = useForm<EnterForm>();
     const router = useRouter()
 
     const onValid = async (data: EnterForm) => {
-
+        enter(data)
     }
+
+    console.log(error, data, loading)
 
     return (
         <div className="mt-16 px-4">
