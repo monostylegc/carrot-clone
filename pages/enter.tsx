@@ -1,27 +1,38 @@
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import Button from "../components/button";
-import Input from "../components/input";
-import { useEffect } from "react";
+import Button from "@components/button";
+import Input from "@components/input";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import useMutation from '../libs/client/usemutation';
+import { useSession, getProviders, signIn } from "next-auth/react";
 
 interface EnterForm {
     email: string;
-    password: string;
 }
 
 export default function Enter () {
-    const [enter, { loading, data, error }] = useMutation("/api/users/enter")
-
+    const { data: session, status } = useSession();
+    const [loading, setLoading] = useState(false)
     const { register, handleSubmit, reset } = useForm<EnterForm>();
     const router = useRouter()
 
-    const onValid = async (data: EnterForm) => {
-        enter(data)
+    const onValid = (data: EnterForm) => {
+        setLoading(true)
+
+        signIn('email', {
+            email: data.email
+        }).then((res) => {
+            console.log(res)
+        }).catch((e) => console.log(e)).finally(() => {
+            setLoading(false)
+        })
     }
 
-    console.log(error, data, loading)
+    useEffect(() => {
+        if (status === 'authenticated') {
+            router.push("/");
+        }
+    }, [session])
 
     return (
         <div className="mt-16 px-4">
@@ -31,12 +42,8 @@ export default function Enter () {
                 </div>
                 <form onSubmit={handleSubmit(onValid)} className="flex flex-col mt-8 space-y-4">
                     <Input register={register('email', { required: true })} name="email" label="Email address" type="email" required />
-                    <Input register={register('password', { required: true })} name="password" label="Password" type="password" required />
-                    <Button text="Login" />
+                    <Button text={loading ? 'Sending E-mail...' : 'Enter'} />
                 </form>
-                <div className="mt-4">
-                    <p className="text-center text-xs font-medium">Don't have account? <Link href='/signup'><span className="text-orange-500 cursor-pointer underline font-bold">Sign UP!</span></Link></p>
-                </div>
                 <div className="mt-6">
                     <div className="relative">
                         <div className="absolute w-full border-t border-gray-300" />

@@ -1,10 +1,19 @@
 import type { NextPage } from "next";
-import Button from "../../components/button";
-import Input from "../../components/input";
-import Layout from "../../components/layout";
-import TextArea from "../../components/textarea";
+import Button from "@components/button";
+import Input from "@components/input";
+import Layout from "@components/layout";
+import TextArea from "@components/textarea";
+import { useForm } from 'react-hook-form'
+
+interface UploadForm {
+    productName: string;
+    price: number;
+    description: string;
+}
 
 const Upload: NextPage = () => {
+    const { register, handleSubmit, reset } = useForm<UploadForm>();
+
     return (
         <Layout canGoBack title="Upload Product">
             <form className="p-4 space-y-4">
@@ -27,11 +36,11 @@ const Upload: NextPage = () => {
                         <input className="hidden" type="file" />
                     </label>
                 </div>
-                <Input required label="Name" name="name" type="text" />
+                <Input register={register('productName')} required label="Name" name="name" type="text" />
                 <Input
+                    register={register('price')}
                     required
                     label="Price"
-                    placeholder="0.00"
                     name="price"
                     type="text"
                     kind="price"
