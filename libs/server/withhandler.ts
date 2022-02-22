@@ -1,22 +1,33 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
-export default async function withHandler (
+export interface ResponseType {
+    ok: boolean;
+    [key: string]: any;
+}
+
+interface ConfigType {
     method: "GET" | "POST" | "DELETE",
-    fn: (req: NextApiRequest,
+    handler: (req: NextApiRequest,
         res: NextApiResponse) => void,
-    isPrivate: boolean) {
-    return async function (req: NextApiRequest, res: NextApiResponse) {
+    isPrivate?: boolean
+}
+
+export default async function withHandler (
+    { method,
+        isPrivate = true,
+        handler }: ConfigType) {
+    return async function (req: NextApiRequest, res: NextApiResponse): Promise<any> {
         const session = await getSession({ req })
 
         if (req.method !== method) {
             return res.status(405).end();
         }
         if (isPrivate && !session) {
-            return res.status(401).end();
+            return res.status(401).json({ ok: false, error: "Login first, plz." });
         }
         try {
-            fn(req, res)
+            await handler(req, res)
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error });

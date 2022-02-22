@@ -24,5 +24,6 @@ export default NextAuth({
     pages: {
         signIn: '/enter',
         verifyRequest: '/verification',
-    }
+
+    },
 })
