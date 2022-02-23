@@ -2,8 +2,18 @@ import type { NextPage } from 'next'
 import FloatingButton from '@components/floatingbutton';
 import Item from '@components/item';
 import Layout from '@components/layout';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
+  const router = useRouter()
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated () {
+      router.replace('/enter')
+    }
+  })
+
   return (
     <Layout title='홈' hasTabBar>
       <div className='flex flex-col space-y-5 divide-y'>

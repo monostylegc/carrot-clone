@@ -2,19 +2,20 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import Button from "@components/button";
 import Input from "@components/input";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
-import { useSession, getProviders, signIn } from "next-auth/react";
+import { signIn, useSession } from 'next-auth/react';
+
 
 interface EnterForm {
     email: string;
 }
 
 export default function Enter () {
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession()
+    const router = useRouter()
     const [loading, setLoading] = useState(false)
     const { register, handleSubmit, reset } = useForm<EnterForm>();
-    const router = useRouter()
 
     const onValid = (data: EnterForm) => {
         setLoading(true)
@@ -23,14 +24,12 @@ export default function Enter () {
             email: data.email
         }).then((res) => {
             console.log(res)
-        }).catch((e) => console.log(e)).finally(() => {
-            setLoading(false)
-        })
+        }).catch((e) => console.log(e))
     }
 
     useEffect(() => {
         if (status === 'authenticated') {
-            router.push("/");
+            router.replace('/')
         }
     }, [session])
 
