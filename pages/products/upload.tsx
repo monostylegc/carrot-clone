@@ -19,9 +19,10 @@ const Upload: NextPage = () => {
 
     const onValid = (data: UploadProductForm) => {
         console.log(data)
+        console.log(session?.user)
     }
 
-    const { status } = useSession({
+    const { data: session, status } = useSession({
         required: true,
         onUnauthenticated () {
             router.replace('/enter');
