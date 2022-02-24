@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import FloatingButton from '@components/floatingbutton';
-import Item from '@components/item';
+import Product from '@components/product';
 import Layout from '@components/layout';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -18,7 +18,7 @@ const Home: NextPage = () => {
     <Layout title='홈' hasTabBar>
       <div className='flex flex-col space-y-5 divide-y'>
         {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-          <Item
+          <Product
             id={i}
             key={i}
             title="iPhone 14"
@@ -27,7 +27,7 @@ const Home: NextPage = () => {
             hearts={1}
           />
         ))}
-        <FloatingButton href="/items/upload">
+        <FloatingButton href="/products/upload">
           <svg
             className="h-6 w-6"
             xmlns="http://www.w3.org/2000/svg"
