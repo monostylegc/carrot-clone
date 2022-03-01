@@ -6,9 +6,12 @@ import { getSession } from "next-auth/react";
 async function handler (req: NextApiRequest, res: NextApiResponse<ResponseType>) {
     const session = await getSession({ req })
 
-    console.log(session?.user)
-
-    return res.json({ ok: true, })
+    if(!session)
+    {
+        return res.json({ ok: true, session : session})
+    }
+    else return res.json({ok: false, message: session})
+    
 }
 
 export default withHandler({ methods: ['GET'], handler })

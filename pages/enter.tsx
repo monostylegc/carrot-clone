@@ -24,6 +24,7 @@ export default function Enter () {
             email: data.email
         }).then((res) => {
             console.log(res)
+            router.replace('/verification')
         }).catch((e) => console.log(e))
     }
 

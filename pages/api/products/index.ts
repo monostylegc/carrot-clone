@@ -6,11 +6,28 @@ import { getSession } from 'next-auth/react';
 async function handler (req: NextApiRequest, res: NextApiResponse) {
     const { name, price, description } = req.body;
     const session = await getSession({ req });
-    console.log(session?.user?.email)
-    res.json({ ok: true, message: 'hello' })
+    const userId = session?.userId
+    
+    const product =await client.product.create({
+        data:{
+            name,
+            price: +price,
+            description,
+            image: 'xx',
+            user:{
+                connect:{
+                    id: userId+""
+                }
+            }
+        }
+    })
+    res.json({
+        ok:true,
+        product
+    })
 }
 
 export default withHandler({
-    methods: ['GET', 'POST'],
+    methods: ['POST'],
     handler
 })

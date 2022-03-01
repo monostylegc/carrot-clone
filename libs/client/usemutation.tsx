@@ -4,11 +4,11 @@ export default function useMutation (
     url: string
 ):
     [(data?: any) => void,
-        {
-            loading: boolean,
-            data: undefined | any,
-            error: undefined | any
-        }
+    {
+        loading: boolean,
+        data: undefined | any,
+        error: undefined | any
+    }
     ] {
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState<undefined | any>(undefined)
