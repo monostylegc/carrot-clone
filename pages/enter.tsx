@@ -32,7 +32,7 @@ export default function Enter () {
         if (status === 'authenticated') {
             router.replace('/')
         }
-    }, [session])
+    }, [session, router])
 
     return (
         <div className="mt-16 px-4">

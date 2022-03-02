@@ -7,8 +7,8 @@ function MyApp ({ Component, pageProps: { session, ...pageProps }, }: AppProps) 
 
   return (
     <SWRConfig value={{
-      refreshInterval: 200,
-      fetcher: (url: string) => { fetch(url).then((res) => { res.json() }) }
+      fetcher: (url: string) =>
+        fetch(url).then((res) => res.json())
     }}
     >
       <SessionProvider session={session}>

@@ -1,12 +1,22 @@
 import type { NextPage } from 'next'
 import FloatingButton from '@components/floatingbutton';
-import Product from '@components/product';
+import Item from '@components/product';
 import Layout from '@components/layout';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import useSWR from 'swr';
+import { Product } from '@prisma/client';
+
+interface ProductsResponse {
+  ok: boolean;
+  products: Product[]
+}
 
 const Home: NextPage = () => {
   const router = useRouter()
+
+  const { data } = useSWR<ProductsResponse>('/api/products');
+
   const { status } = useSession({
     required: true,
     onUnauthenticated () {
@@ -14,15 +24,17 @@ const Home: NextPage = () => {
     }
   })
 
+  console.log(data)
+
   return (
     <Layout title='홈' hasTabBar>
       <div className='flex flex-col space-y-5 divide-y'>
-        {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-          <Product
-            id={i}
-            key={i}
-            title="iPhone 14"
-            price={99}
+        {data?.products?.map((product) => (
+          <Item
+            id={product.id}
+            key={product.id}
+            title={product.name}
+            price={product.price}
             comments={1}
             hearts={1}
           />
