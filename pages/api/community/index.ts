@@ -4,17 +4,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 
 async function handler (req: NextApiRequest, res: NextApiResponse) {
-    const { name, price, description } = req.body;
+    const { question } = req.body;
     const session = await getSession({ req });
     const userId = session?.userId
 
     if (req.method === 'POST') {
-        const product = await client.product.create({
+        const post = await client.post.create({
             data: {
-                name,
-                price: +price,
-                description,
-                image: 'xx',
+                question,
                 user: {
                     connect: {
                         id: userId + ""
@@ -24,22 +21,21 @@ async function handler (req: NextApiRequest, res: NextApiResponse) {
         })
         res.json({
             ok: true,
-            product
         })
     }
     if (req.method === 'GET') {
-        const products = await client.product.findMany({
+        const posts = await client.post.findMany({
             include: {
                 _count: {
                     select: {
-                        favs: true
+                        woderings: true
                     }
                 }
             }
         })
         return res.json({
             ok: true,
-            products
+            posts
         })
     }
 

@@ -5,11 +5,19 @@ import Layout from '@components/layout';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { Product } from '@prisma/client';
+import { Fav, Product } from '@prisma/client';
+
+interface FavWithCount extends Fav {
+  favs: number
+}
+
+interface ProductWithFavs extends Product {
+  _count: FavWithCount;
+}
 
 interface ProductsResponse {
   ok: boolean;
-  products: Product[]
+  products: ProductWithFavs[]
 }
 
 const Home: NextPage = () => {
@@ -36,7 +44,7 @@ const Home: NextPage = () => {
             title={product.name}
             price={product.price}
             comments={1}
-            hearts={1}
+            hearts={product._count.favs}
           />
         ))}
         <FloatingButton href="/products/upload">
