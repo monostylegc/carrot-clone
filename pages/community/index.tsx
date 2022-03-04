@@ -1,21 +1,38 @@
 import type { NextPage } from "next";
 import FloatingButton from "@components/floatingbutton";
 import Layout from "@components/layout";
+import useSWR from 'swr';
+import { Post, User, Wondering } from "@prisma/client";
+
+interface PostWithUser extends Post {
+    user: User;
+    _count: {
+        wonderings: string
+    }
+}
+
+interface PostResponse {
+    ok: boolean;
+    posts: PostWithUser[];
+}
 
 const Community: NextPage = () => {
+    const { data } = useSWR<PostResponse>('/api/posts/')
+    console.log(data)
     return (
         <Layout title='동네생활' hasTabBar>
             <div className="py-16 px-4 space-y-8">
-                {[1, 2, 3, 4, 5].map((_, i) => (
-                    <div key={i} className="flex flex-col cursor-pointer items-start">
+                {data?.posts.map((post) => (
+                    <div key={post?.id} className="flex flex-col cursor-pointer items-start">
                         <span className="flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                             동네질문
                         </span>
                         <div className="mt-2 text-gray-700">
-                            <span className="text-orange-500 font-medium">Q.</span> What is the best mandu restaurant?
+                            <span className="text-orange-500 font-medium">Q. </span>
+                            {post?.question}
                         </div>
                         <div className="mt-5 flex items-center justify-between w-full text-gray-500 text-xs">
-                            <span>니꼬</span>
+                            <span>{post?.user?.name ?? 'anonymus'}</span>
                             <span>18시간 전</span>
                         </div>
                         <div className="flex space-x-5 mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full">

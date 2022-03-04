@@ -1,8 +1,30 @@
 import type { NextPage } from "next";
 import Layout from "@components/layout";
 import TextArea from "@components/textarea";
+import useSWR from 'swr';
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
+import { Post, User } from "@prisma/client";
+import Link from "next/link";
+
+
+interface PostWithUser extends Post {
+  user: User
+}
+
+interface PostResponse {
+  ok: boolean;
+  post: PostWithUser
+}
 
 const CommunityPostDetail: NextPage = () => {
+  const router = useRouter()
+  const { data } = useSWR<PostResponse>(router.query.id ? `/api/posts/${router.query.id}` : null)
+  const { register, handleSubmit } = useForm()
+
+  const onValid = () => { }
+
+  console.log(data)
   return (
     <Layout canGoBack>
       <div>
@@ -11,17 +33,20 @@ const CommunityPostDetail: NextPage = () => {
         </span>
         <div className="flex mb-3 px-4 cursor-pointer pb-3  border-b items-center space-x-3">
           <div className="w-10 h-10 rounded-full bg-slate-300" />
-          <div>
-            <p className="text-sm font-medium text-gray-700">Steve Jebs</p>
-            <p className="text-xs font-medium text-gray-500">
-              View profile &rarr;
-            </p>
-          </div>
+          <Link href={`/user/profiles/${data?.post.user.id}`}>
+            <div>
+              <p className="text-sm font-medium text-gray-700">{data?.post?.user.name ?? 'Anonymous'}</p>
+              <p className="text-xs font-medium text-gray-500">
+                View profile &rarr;
+              </p>
+            </div>
+          </Link>
         </div>
         <div>
-          <div className="mt-2 px-4 text-gray-700">
-            <span className="text-orange-500 font-medium">Q.</span> What is the
-            best mandu restaurant?
+          <div className="mt-2 px-4 text-gray-700 whitespace-pre-wrap flex">
+            <div><span className="text-orange-500 font-medium">Q. </span>
+            </div>
+            {data?.post?.question}
           </div>
           <div className="flex px-4 space-x-5 mt-3 text-gray-700 py-2.5 border-t border-b-[2px]  w-full">
             <span className="flex space-x-2 items-center text-sm">
@@ -74,8 +99,9 @@ const CommunityPostDetail: NextPage = () => {
             </div>
           </div>
         </div>
-        <div className="px-4">
+        <form className="px-4" onSubmit={handleSubmit(onValid)}>
           <TextArea
+            register={register('description', { required: true, minLength: 5 })}
             name="description"
             placeholder="Answer this question!"
             required
@@ -83,7 +109,7 @@ const CommunityPostDetail: NextPage = () => {
           <button className="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none ">
             Reply
           </button>
-        </div>
+        </form>
       </div>
     </Layout>
   );

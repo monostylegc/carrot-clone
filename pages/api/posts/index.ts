@@ -21,6 +21,7 @@ async function handler (req: NextApiRequest, res: NextApiResponse) {
         })
         res.json({
             ok: true,
+            post
         })
     }
     if (req.method === 'GET') {
@@ -28,7 +29,12 @@ async function handler (req: NextApiRequest, res: NextApiResponse) {
             include: {
                 _count: {
                     select: {
-                        woderings: true
+                        wonderings: true
+                    }
+                },
+                user: {
+                    select: {
+                        name: true
                     }
                 }
             }
