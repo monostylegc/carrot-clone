@@ -29,7 +29,8 @@ async function handler (req: NextApiRequest, res: NextApiResponse) {
             include: {
                 _count: {
                     select: {
-                        wonderings: true
+                        wonderings: true,
+                        answers: true
                     }
                 },
                 user: {

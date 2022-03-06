@@ -13,7 +13,7 @@ async function handler (req: NextApiRequest, res: NextApiResponse) {
             postId: +id.toString()
         }
     })
-
+    //post가 존재하는지 체크안함 
     if (alreadyExist) {
         await client.wondering.delete({
             where: {
