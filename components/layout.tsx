@@ -51,7 +51,7 @@ export default function Layout ({
             {hasTabBar ?
                 <nav className="bg-white max-w-xl text-gray-700 border-t fixed bottom-0 w-full px-10 pb-5 pt-3 flex justify-between text-xs">
                     <Link href="/">
-                        <a className="flex flex-col items-center space-y-2">
+                        <a className={cls("flex flex-col items-center space-y-2", router.asPath === '/' ? "text-orange-500" : "")}>
                             <svg
                                 className="w-6 h-6"
                                 fill="none"
@@ -70,7 +70,7 @@ export default function Layout ({
                         </a>
                     </Link>
                     <Link href="/community">
-                        <a className="flex flex-col items-center space-y-2">
+                        <a className={cls("flex flex-col items-center space-y-2", router.asPath === '/community' ? "text-orange-500" : "")}>
                             <svg
                                 className="w-6 h-6"
                                 fill="none"
@@ -89,7 +89,7 @@ export default function Layout ({
                         </a>
                     </Link>
                     <Link href="/chats">
-                        <a className="flex flex-col items-center space-y-2">
+                        <a className={cls("flex flex-col items-center space-y-2", router.asPath === '/chats' ? "text-orange-500" : "")}>
                             <svg
                                 className="w-6 h-6"
                                 fill="none"
@@ -108,7 +108,7 @@ export default function Layout ({
                         </a>
                     </Link>
                     <Link href="/live">
-                        <a className="flex flex-col items-center space-y-2">
+                        <a className={cls("flex flex-col items-center space-y-2", router.asPath === '/live' ? "text-orange-500" : "")}>
                             <svg
                                 className="w-6 h-6"
                                 fill="none"
@@ -127,7 +127,7 @@ export default function Layout ({
                         </a>
                     </Link>
                     <Link href="/profile">
-                        <a className="flex flex-col items-center space-y-2">
+                        <a className={cls("flex flex-col items-center space-y-2", router.asPath === '/profile' ? "text-orange-500" : "")}>
                             <svg
                                 className="w-6 h-6"
                                 fill="none"

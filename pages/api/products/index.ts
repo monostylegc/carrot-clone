@@ -37,12 +37,11 @@ async function handler (req: NextApiRequest, res: NextApiResponse) {
                 }
             }
         })
-        return res.json({
+        res.json({
             ok: true,
             products
         })
     }
-
 }
 
 export default withHandler({
